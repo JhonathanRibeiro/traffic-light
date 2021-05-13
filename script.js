@@ -1,12 +1,15 @@
 const img = document.querySelector('img');
 const buttons = document.getElementById('buttons');
 let colorIndex = 0;
+let intervalId = null;
 
 const trafficLight = (e) => {
+    stopAutomatic();
     turnOn[e.target.id]();
 }
 
-const nextIndex = () => { if (colorIndex < 2 ? ++colorIndex : 0); }
+const nextIndex = () => colorIndex < 2 ? ++colorIndex : 0;
+
 const changecolor = () => {
     const colors = ['red', 'yellow', 'green']
     const color = colors[colorIndex]
@@ -14,11 +17,15 @@ const changecolor = () => {
     nextIndex();
 }
 
+const stopAutomatic = () => {
+    clearInterval(intervalId);
+}
+
 const turnOn = {
     'red': () => img.src = './img/vermelho.png',
     'yellow': () => img.src = './img/amarelo.png',
     'green': () => img.src = './img/verde.png',
-    'automatic': () => setInterval(changecolor, 1000)
+    'automatic': () => intervalId = setInterval(changecolor, 1000)
 }
 
 buttons.addEventListener('click', trafficLight);
